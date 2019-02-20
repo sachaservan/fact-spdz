@@ -1942,14 +1942,14 @@ class sfix(_number):
         val = self.v.reveal()
         return cfix(val)
 
-# this is for 20 bit decimal precision
-# with 40 bitlength of entire number
+# this is for 64 bit decimal precision
+# with 128 bitlength of entire number
 # these constants have been chosen for multiplications to fit in 128 bit prime field
 # (precision n1) 41 + (precision n2) 41 + (stat_sec) 40 = 82 + 40 = 122 <= 128
 # with statistical security of 40
 
-fixed_lower = 20
-fixed_upper = 40
+fixed_lower = 64
+fixed_upper = 128
 
 sfix.set_precision(fixed_lower, fixed_upper)
 cfix.set_precision(fixed_lower, fixed_upper)
