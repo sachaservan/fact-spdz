@@ -53,12 +53,23 @@ echo "export CPLUS_INCLUDE_PATH=${mylocal}/openssl/include/:${CPLUS_INCLUDE_PATH
 echo "export LIBRARY_PATH=${mylocal}/openssl/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
 echo "export LD_LIBRARY_PATH=${mylocal}/openssl/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
 
+# export libsodium paths
+echo "export PATH=\"${mylocal}/libsodium/bin/:${PATH}\"" >> $HOME/.bashrc
+echo "export C_INCLUDE_PATH=${mylocal}/libsodium/include/:${C_INCLUDE_PATH}\"" >> $HOME/.bashrc
+echo "export CPLUS_INCLUDE_PATH=${mylocal}/libsodiuminclude/:${CPLUS_INCLUDE_PATH}\"" >> $HOME/.bashrc
+echo "export LIBRARY_PATH=${mylocal}/libsodium/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
+echo "export LD_LIBRARY_PATH=$/usr/local/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
+
+
 # export MPIR paths
 echo "export PATH=\"${mylocal}/mpir/bin/:${PATH}\"" >> $HOME/.bashrc
 echo "export C_INCLUDE_PATH=\"${mylocal}/mpir/include/:${C_INCLUDE_PATH}\"" >> $HOME/.bashrc
 echo "export CPLUS_INCLUDE_PATH=\"${mylocal}/mpir/include/:${CPLUS_INCLUDE_PATH}\"" >> $HOME/.bashrc
 echo "export LIBRARY_PATH=\"${mylocal}/mpir/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
 echo "export LD_LIBRARY_PATH=\"${mylocal}/mpir/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
+
+echo "export LD_LIBRARY_PATH=\"${mylocal}:/usr/local/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
+echo "export LIBRARY_PATH=\"${mylocal}:/usr/local/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
 
 # update bash
 source $HOME/.bashrc

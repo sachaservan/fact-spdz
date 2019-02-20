@@ -1948,7 +1948,7 @@ class sfix(_number):
 # (precision n1) 41 + (precision n2) 41 + (stat_sec) 40 = 82 + 40 = 122 <= 128
 # with statistical security of 40
 
-fixed_lower = 64
+fixed_lower = 60
 fixed_upper = 128
 
 sfix.set_precision(fixed_lower, fixed_upper)
