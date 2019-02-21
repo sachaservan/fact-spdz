@@ -68,8 +68,5 @@ echo "export CPLUS_INCLUDE_PATH=\"${mylocal}/mpir/include/:${CPLUS_INCLUDE_PATH}
 echo "export LIBRARY_PATH=\"${mylocal}/mpir/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
 echo "export LD_LIBRARY_PATH=\"${mylocal}/mpir/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
 
-echo "export LD_LIBRARY_PATH=\"${mylocal}:/usr/local/lib/:${LD_LIBRARY_PATH}\"" >> $HOME/.bashrc
-echo "export LIBRARY_PATH=\"${mylocal}:/usr/local/lib/:${LIBRARY_PATH}\"" >> $HOME/.bashrc
-
 # update bash
 source $HOME/.bashrc
