@@ -159,9 +159,9 @@ int main(int argc, char** argv)
     finish = atoi(argv[4]);
 
     cout << "***Input data***" << "\n"
-        << "Client ID:         " << argv[1] << "\n"
-        << "Filename:          " << argv[2] << "\n"
-        << "Number of Parties: " << argv[3] << "\n"
+        << "Client ID:         " << to_string(my_client_id) << "\n"
+        << "Filename:          " << data_file_name << "\n"
+        << "Number of Parties: " << to_string(nparties) << "\n"
         << "Finished?          " << (finish == 0 ? "FALSE" : "TRUE") << "\n" 
         << endl;
 
