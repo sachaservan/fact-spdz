@@ -34,7 +34,7 @@ OBJS = $(COMPLETE)
 DEPS := $(OBJS:.o=.d)
 
 
-all: gen_input online offline externalIO
+all: gen_input online offline star
 
 ifeq ($(USE_NTL),1)
 all: overdrive she-offline
@@ -51,7 +51,7 @@ offline: $(OT_EXE) Check-Offline.x
 
 gen_input: gen_input_f2n.x gen_input_fp.x
 
-externalIO: client-setup.x fact-program-client.x bankers-bonus-commsec-client.x
+star: client-setup.x client.x upload-client.x
 
 she-offline: Check-Offline.x spdz2-offline.x
 
@@ -95,10 +95,10 @@ gen_input_fp.x: Scripts/gen_input_fp.cpp $(COMMON)
 client-setup.x: client-setup.cpp $(COMMON) $(PROCESSOR)
 	$(CXX) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
-fact-program-client.x: ExternalIO/fact-program-client.cpp $(COMMON) $(PROCESSOR)
+client.x: STAR/client.cpp $(COMMON) $(PROCESSOR)
 	$(CXX) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
-bankers-bonus-commsec-client.x: ExternalIO/bankers-bonus-commsec-client.cpp $(COMMON) $(PROCESSOR)
+upload-client.x: STAR/upload-client.cpp $(COMMON) $(PROCESSOR)
 	$(CXX) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 ifeq ($(USE_NTL),1)
