@@ -60,12 +60,12 @@ int main(int argc, char** argv)
         << endl;
 
     // init static gfp
-    string prep_data_prefix = get_prep_dir(num_parties, 512, 40);
+    string prep_data_prefix = get_prep_dir(num_parties, PRIME_BITS, FIELD_BITS);
     common::init_fields(prep_data_prefix);
 
     // parse the data from file
     // and map inputs into gfp vectors
-    vector<vector<gfp>> input_mat;
+    vector<vector<int>> input_mat;
     
     ifstream infile(data_file_name);
     std::string line;
@@ -73,15 +73,15 @@ int main(int argc, char** argv)
     while (getline(infile, line))
     {
         istringstream iss(line);
-        vector<gfp> row_vec;
+        vector<int> row_vec;
         input_mat.push_back(row_vec);
         int val;
         while (iss >> val) { 
-            input_mat[row_indx].push_back(gfp(val));
+            input_mat[row_indx].push_back(val);
         } 
         row_indx++;
     }
-
+    
     // setup connections from this client to each party socket
     vector<int> sockets(num_parties);
     for (int i = 0; i < num_parties; i++)  {
@@ -92,17 +92,21 @@ int main(int argc, char** argv)
 
     // simplifying assumption: matrix is filled. i.e., no missing data.
     int num_attr = input_mat[0].size(); // number of columns in the data input
-    int num_rows = input_mat.size(); // number of rows in the input columns 
+    int num_rows = input_mat.size();    // number of rows in the input columns 
 
     // to feed the input to the SPDZ engine, we need to flatten the matrix
     // into an array of gfp. Array size = cols*rows + extra (for metadata)
-    vector<gfp> input_values_gfp(num_attr*num_rows + MAX_NUM_EXTRA_PARAMS );
+    vector<gfp> input_values_gfp(num_attr*num_rows + MAX_NUM_EXTRA_PARAMS);
 
     // doing upload action, provide necessary inputs
     input_values_gfp[0].assign(0);           // action_type 0 for UPLOAD
+    input_values_gfp[1].assign(0);           // dummy
     input_values_gfp[2].assign(num_rows);    // next we give the number
     input_values_gfp[3].assign(num_attr);    // and the number of attributes
     input_values_gfp[4].assign(finish);      // quit the program
+    input_values_gfp[5].assign(0);           // dummy
+
+
 
     // first row is for extra params 
     // starting with second row, we flatten the matrix

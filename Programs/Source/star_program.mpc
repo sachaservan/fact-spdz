@@ -23,7 +23,7 @@ PORT_NUM = 14000
 
 # upload limits
 MAX_NUM_DATASETS = 6 
-MAX_DATASET_SIZE = 100 
+MAX_DATASET_SIZE = 100
 MAX_SELECTED_ATTR = 20
 MAX_EXTRA_INPUTS = 30 
 
@@ -55,7 +55,7 @@ def compute_mean(database, db_size):
     size = cfix()
     size.load_int(db_size)
     mean = (sum[0]/size)
-    print_ln('[DEBUG]: mean = %s.', mean)
+    # print_ln('[DEBUG]: mean = %s.', mean)
     return mean
 
 def compute_mean_and_variance(database, db_size):
@@ -74,7 +74,7 @@ def compute_mean_and_variance(database, db_size):
         # convert to sfix and update counter
         entry = sfix()
         entry.load_int(database[i])
-        print_ln('entry %s = %s.', i, entry.reveal())
+        # print_ln('[DEBUG]: entry %s = %s.', i, entry.reveal())
         
         sum[0] = sum[0] + entry
         sumsq[0] = sumsq[0] + (entry*entry)
@@ -115,11 +115,10 @@ def compute_ttest(database, num_rows, attr_x, attr_y):
     mean_x, var_x = compute_mean_and_variance(vector_x, num_rows)
     mean_y, var_y = compute_mean_and_variance(vector_y, num_rows)
 
-    # debug print
-    print_ln('[DEBUG]: mean_x = %s.', mean_x.reveal())
-    print_ln('[DEBUG]: mean_y = %s.', mean_y.reveal())
-    print_ln('[DEBUG]: var_x = %s.', var_x.reveal())
-    print_ln('[DEBUG]: var_y = %s.', var_y.reveal())
+    # print_ln('[DEBUG]: mean_x = %s.', mean_x.reveal())
+    # print_ln('[DEBUG]: mean_y = %s.', mean_y.reveal())
+    # print_ln('[DEBUG]: var_x = %s.', var_x.reveal())
+    # print_ln('[DEBUG]: var_y = %s.', var_y.reveal())
 
     # compute t statistic (squared)
     one_fix = cfix(1)
@@ -165,11 +164,10 @@ def compute_pearson_test(database, num_rows, attr_x, attr_y):
     mean_x, var_x = compute_mean_and_variance(vector_x, num_rows)
     mean_y, var_y = compute_mean_and_variance(vector_y, num_rows)
     
-    # debug print
-    print_ln('[DEBUG]: mean_x = %s.', mean_x.reveal())
-    print_ln('[DEBUG]: mean_y = %s.', mean_y.reveal())
-    print_ln('[DEBUG]: var_x = %s.', var_x.reveal())
-    print_ln('[DEBUG]: var_y = %s.', var_y.reveal())
+    # print_ln('[DEBUG]: mean_x = %s.', mean_x.reveal())
+    # print_ln('[DEBUG]: mean_y = %s.', mean_y.reveal())
+    # print_ln('[DEBUG]: var_x = %s.', var_x.reveal())
+    # print_ln('[DEBUG]: var_y = %s.', var_y.reveal())
 
     # compute (xi - mean_x)(yi - mean_y)
     sumsq = Array(1, sfix)
@@ -183,10 +181,10 @@ def compute_pearson_test(database, num_rows, attr_x, attr_y):
 
     # compute r statistic (squared)
     numerator = sumsq[0]
-    print_ln('[DEBUG]: numerator = %s.', numerator.reveal())
+    # print_ln('[DEBUG]: numerator = %s.', numerator.reveal())
 
     denominator = var_x*var_y
-    print_ln('[DEBUG]: denominator = %s.', denominator.reveal())
+    # print_ln('[DEBUG]: denominator = %s.', denominator.reveal())
 
     # get the sign bit 
     s = numerator < 0
@@ -219,7 +217,7 @@ def compute_chisq_test(database, num_rows, num_attrs, selected_attrs):
         def loop_body(j):
             entry = sfix()
             entry.load_int(database[selected_attrs[i]*num_rows + j])
-            print_ln("entry = %s", entry.reveal())
+            # print_ln("[DEBUG]: entry = %s", entry.reveal())
             observed[i] = observed[i] + entry
             sum_total[0] = sum_total[0] + entry
 
@@ -233,7 +231,7 @@ def compute_chisq_test(database, num_rows, num_attrs, selected_attrs):
     @for_range(num_attrs)
     def loop_body(i):
        val = (observed[i] - expected[i])*(observed[i] - expected[i])
-       print_ln("value %s = %s", observed[i].reveal(), expected[i].reveal())
+       # print_ln("[DEBUG]: value %s = %s", observed[i].reveal(), expected[i].reveal())
        x2[0] = x2[0] + (val/expected[i])    
 
     return x2[0]
@@ -357,7 +355,7 @@ def main():
         # wait for client to connect
         # get the next client's upload
         client_socket[0], client_data = accept_client_input()
-
+        
         # get the requested action e.g., data upload or statistical test
         client_action = client_data[0].reveal()
 
@@ -382,7 +380,7 @@ def main():
             # TODO: make this less hacky!
             attrs[i] = client_data[6 + i].reveal() 
 
-        print_ln("Selected attributes are %s and %s", attrs[0], attrs[1])
+        # print_ln("[DEBUG]: selected attributes are %s and %s", attrs[0], attrs[1])
 
         #####################################
         # (IF) CLIENT WANTS TO UPLOAD DATA

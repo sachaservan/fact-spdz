@@ -72,27 +72,8 @@ int main(int argc, char** argv) {
     cout << "Quit? " << (finish == 0 ? "FALSE" : "TRUE") << endl;
 
     // init static gfp
-    string prep_data_prefix = get_prep_dir(num_parties, 512, 40);
+    string prep_data_prefix = get_prep_dir(num_parties, PRIME_BITS, FIELD_BITS);
     common::init_fields(prep_data_prefix);
-
-    // parse the data from file
-    // and map inputs into gfp vectors
-    vector<vector<gfp>> input_mat;
-    
-    ifstream infile(data_file_name);
-    std::string line;
-    int row_indx = 0;
-    while (getline(infile, line))
-    {
-        istringstream iss(line);
-        vector<gfp> row_vec;
-        input_mat.push_back(row_vec);
-        int val;
-        while (iss >> val) { 
-            input_mat[row_indx].push_back(gfp(val));
-        } 
-        row_indx++;
-    }
 
     // setup connections from this client to each party socket
     vector<int> sockets(num_parties);
@@ -102,12 +83,9 @@ int main(int argc, char** argv) {
 
     cout << "Finished setup of socket connections to SPDZ engines." << endl;
 
-    // simplifying assumption: matrix is filled. i.e., no missing data.
-    int num_rows = input_mat.size(); // number of rows in the input columns 
-
     // to feed the input to the SPDZ engine, we need to flatten the matrix
     // into an array of gfp. Array size = cols*rows + extra (for metadata)
-    vector<gfp> input_values_gfp(num_attr*num_rows + MAX_NUM_EXTRA_PARAMS );
+    vector<gfp> input_values_gfp(MAX_NUM_EXTRA_PARAMS);
 
     int test_type_int = -1;
     if (!test_type.compare(TEST_TYPE_TTEST)) {
@@ -116,8 +94,10 @@ int main(int argc, char** argv) {
         test_type_int = 2;
     } else if (!test_type.compare(TEST_TYPE_CHISQ)) {
         test_type_int = 3;
+    } else if (!test_type.compare(TEST_TYPE_FTEST)) {
+        test_type_int = 4;
     }
-
+ 
     if (test_type_int == -1) {
         cout << "Invalid test specified!" << endl;
         
@@ -132,6 +112,8 @@ int main(int argc, char** argv) {
     // only relevant inputs when performing other actions
     input_values_gfp[0].assign(test_type_int);     // type of test (1 = ttest, 2 = pearson, 3 = chisq, etc)
     input_values_gfp[1].assign(dataset_id);        // id of the dataset to compute the test over
+    input_values_gfp[2].assign(0);                 // dummy
+    input_values_gfp[3].assign(0);                 // dummy
     input_values_gfp[4].assign(finish);            // quit the program after running
     input_values_gfp[5].assign(num_attr);          // numer of selected attribute
     
