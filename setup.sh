@@ -9,6 +9,11 @@ sudo apt-get install golang-go
 sudo apt-get install yasm # needed by mpir
 sudo apt-get install m4 # needed by mpir
 
+# download SimpleOT
+git clone https://github.com/pascholl/SimpleOT/tree/ad5929c154fbf65dc5b7aeb9344e811ca7782ae6
+cd SimpleOT
+make 
+
 # config stuff
 mylocal="$HOME/local"
 mkdir -p ${mylocal}
@@ -38,7 +43,6 @@ tar -xf openssl-1.1.0j.tar.gz
 cd openssl-1.1.0j
 ./config --prefix="${mylocal}/openssl"
 make && sudo make install
-
 
 # update bashrc
 echo "export mylocal=$HOME/local" >> $HOME/.bashrc
