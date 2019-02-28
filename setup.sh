@@ -1,16 +1,16 @@
 # install necessary packages
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install build-essential
-sudo apt-get install libcrypto++6 libcrypto++6-dbg libcrypto++-dev
-sudo apt-get install python
-sudo apt-get install libgmp3-dev
-sudo apt-get install golang-go
-sudo apt-get install yasm # needed by mpir
-sudo apt-get install m4 # needed by mpir
+sudo apt-get install -y build-essential
+sudo apt-get install -y libcrypto++6 libcrypto++6-dbg libcrypto++-dev
+sudo apt-get install -y python
+sudo apt-get install -y libgmp3-dev
+sudo apt-get install -y golang-go
+sudo apt-get install -y yasm # needed by mpir
+sudo apt-get install -y m4 # needed by mpir
 
 # download SimpleOT
-git clone https://github.com/pascholl/SimpleOT/tree/ad5929c154fbf65dc5b7aeb9344e811ca7782ae6
+git clone https://github.com/pascholl/SimpleOT
 cd SimpleOT
 make 
 

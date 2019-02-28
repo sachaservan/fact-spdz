@@ -1,0 +1,13 @@
+# Create image based on Ubuntu 16.04.2 LTS (Xenial Xerus)
+FROM ubuntu:xenial
+
+# install dependency
+RUN apt-get update && apt-get -y install sudo
+RUN apt-get install -y git
+RUN apt-get install -y curl
+
+# copy the code into the repo
+COPY . /star-spdz
+
+# run setup script
+RUN /star-spdz/setup.sh
