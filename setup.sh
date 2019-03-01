@@ -10,7 +10,7 @@ sudo apt-get install -y yasm # needed by mpir
 sudo apt-get install -y m4 # needed by mpir
 
 # download SimpleOT
-git clone https://github.com/pascholl/SimpleOT
+git clone https://github.com/pascholl/SimpleOT/tree/ad5929c154fbf65dc5b7aeb9344e811ca7782ae6
 cd SimpleOT
 make 
 

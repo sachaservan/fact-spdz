@@ -54,8 +54,8 @@ def compute_mean(database, db_size):
 
 def compute_mean_and_variance(database, db_size):
     # need array in order to modify in loop
-    sumsq = Array(1, sfix) # ∑ x^2 for x in DB
-    sum   = Array(1, sfix) # ∑ x for x in DB
+    sumsq = Array(1, sfix) # sum x^2 for x in DB
+    sum   = Array(1, sfix) # sum x for x in DB
 
     # hack to init sum[0] as fixed point 
     zerof = sfix()
@@ -315,7 +315,7 @@ def write_result_to_client(sockets, res):
     """Send share of winning client id to all clients who joined game."""
 
     # Setup authenticate result using share of random.
-    # client can validate ∑ sum * ∑ rnd_from_triple = ∑ auth_result
+    # client can validate sum sum * sum rnd_from_triple = sum auth_result
     rnd_from_triple = sint.get_random_triple()[0]
     auth_result = res * rnd_from_triple
 

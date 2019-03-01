@@ -1,13 +1,98 @@
-# Create image based on Ubuntu 16.04.2 LTS (Xenial Xerus)
-FROM ubuntu:xenial
+# Create image based on Ubuntu 18.04
+FROM ubuntu:bionic
 
 # install dependency
-RUN apt-get update && apt-get -y install sudo
+RUN apt-get -y update 
+RUN apt-get -y upgrade
+RUN apt-get -y install sudo
 RUN apt-get install -y git
 RUN apt-get install -y curl
+RUN apt-get install -y build-essential
+RUN apt-get -y update 
+RUN apt-get install -y libcrypto++6 
+RUN apt-get install -y libcrypto++6-dbg 
+RUN apt-get install -y libcrypto++-dev
+RUN apt-get install -y python
+RUN apt-get install -y libgmp3-dev
+RUN apt-get install -y golang-go
+# needed by mpir
+RUN apt-get install -y yasm 
+RUN apt-get install -y m4
+
+# config stuff
+ENV mylocal "$HOME/local"
+RUN mkdir -p ${mylocal}
+
+# install MPIR 3.0.0
+WORKDIR ${mylocal}
+RUN curl -O "http://mpir.org/mpir-3.0.0.tar.bz2" \
+    && tar xf mpir-3.0.0.tar.bz2 \
+    && cd mpir-3.0.0 \
+    && ./configure --enable-cxx --prefix="${mylocal}/mpir" \
+    && make \
+    && make check \
+    && make install 
+
+# install libsodium
+WORKDIR $mylocal
+RUN curl -O https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz \ 
+    && tar xf libsodium-1.0.16.tar.gz \
+    && cd libsodium-1.0.16 \
+    && ./configure \
+    && make \
+    && make \
+    && make install
+
+# install OpenSSL 1.1.0
+WORKDIR $mylocal
+RUN curl -O "https://www.openssl.org/source/openssl-1.1.0j.tar.gz" \
+    && tar -xf openssl-1.1.0j.tar.gz \
+    && cd openssl-1.1.0j \
+    && ./config --prefix="${mylocal}/openssl" \
+    && make \ 
+    && make install
+
+
+# download SimpleOT
+RUN git clone https://github.com/pascholl/SimpleOT
+RUN cd SimpleOT \
+    && make 
+
+# update bashrc
+ENV mylocal=$HOME/local
+
+# export OpenSSL paths
+ENV PATH="${mylocal}/openssl/bin/:${PATH}"
+ENV C_INCLUDE_PATH="${mylocal}/openssl/include/:${C_INCLUDE_PATH}"
+ENV CPLUS_INCLUDE_PATH="${mylocal}/openssl/include/:${CPLUS_INCLUDE_PATH}"
+ENV LIBRARY_PATH="${mylocal}/openssl/lib/:${LIBRARY_PATH}"
+ENV LD_LIBRARY_PATH="${mylocal}/openssl/lib/:${LD_LIBRARY_PATH}"
+
+# export libsodium paths
+ENV LD_LIBRARY_PATH="${mylocal}:/usr/local/lib/:${LD_LIBRARY_PATH}"
+ENV LIBRARY_PATH="${mylocal}:/usr/local/lib/:${LIBRARY_PATH}"
+
+# export MPIR paths
+ENV PATH="${mylocal}/mpir/bin/:${PATH}"
+ENV C_INCLUDE_PATH="${mylocal}/mpir/include/:${C_INCLUDE_PATH}"
+ENV CPLUS_INCLUDE_PATH="${mylocal}/mpir/include/:${CPLUS_INCLUDE_PATH}" 
+ENV LIBRARY_PATH="${mylocal}/mpir/lib/:${LIBRARY_PATH}" 
+ENV LD_LIBRARY_PATH="${mylocal}/mpir/lib/:${LD_LIBRARY_PATH}"
 
 # copy the code into the repo
 COPY . /star-spdz
+WORKDIR /star-spdz
+RUN mv "${mylocal}/SimpleOT" . 
 
-# run setup script
-RUN /star-spdz/setup.sh
+RUN make -j 
+RUN python2.7 compile.py star_program -p 512
+
+# Make ports available to the world outside this container
+EXPOSE 14000
+EXPOSE 14001
+EXPOSE 14002
+EXPOSE 14003
+EXPOSE 14004
+EXPOSE 14005
+EXPOSE 14006
+EXPOSE 14007
