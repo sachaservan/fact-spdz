@@ -1,6 +1,7 @@
 # install necessary packages
 sudo apt-get update
 sudo apt-get upgrade
+sudo apt-get install -y libsodium-dev
 sudo apt-get install -y build-essential
 sudo apt-get install -y libcrypto++6 libcrypto++6-dbg libcrypto++-dev
 sudo apt-get install -y python
@@ -27,14 +28,6 @@ cd mpir-3.0.0
 make && make check
 sudo make install
 
-# install libsodium
-cd $mylocal
-curl -O https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz
-tar xf libsodium-1.0.16.tar.gz
-cd libsodium-1.0.16/
-./configure
-make && make check
-sudo make install
 
 # install OpenSSL 1.1.0
 cd $mylocal
