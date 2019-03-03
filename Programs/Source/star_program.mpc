@@ -10,17 +10,20 @@ from Compiler.types import sint, regint, Array, MemValue, Matrix
 from Compiler.instructions import listen, acceptclientconnection
 from Compiler.library import print_ln, do_while, for_range
 from Compiler import floatingpoint
-import math # python math
+
 # need sufficient bit length (dealing with 64 bit ints + 40 bit security so must be > 104 bits)
 program.bit_length = 128
+
 # set program security
 program.security = 40
 PORT_NUM = 14000
+
 # upload limits
 MAX_NUM_DATASETS = 1  
 MAX_DATASET_SIZE = 200000 #20*10k
 MAX_SELECTED_ATTR = 20
 MAX_EXTRA_INPUTS = 30 
+
 # client actions
 ACTION_UPLOAD = regint(0)
 ACTION_TTEST = regint(1)
@@ -28,6 +31,7 @@ ACTION_PEARSON = regint(2)
 ACTION_CHISQ = regint(3)
 ACTION_FTEST = regint(4)
 ACTION_UNKNOWN = regint(-1)
+
 def compute_mean(database, db_size):   
     # need array in order to modify in loop
     sum = Array(1, sfix)
@@ -245,6 +249,8 @@ def compute_ftest(database, num_rows, num_attrs, selected_attrs):
     num_rows_fix = cfix()
     num_rows_fix.load_int(num_rows)
 
+    
+
     # get the mean and variance of the selected attributes
     @for_range(num_attrs)
     def loop_body(i):
@@ -271,28 +277,49 @@ def compute_ftest(database, num_rows, num_attrs, selected_attrs):
     denom_1.load_int(num_attrs - 1) 
 
     # compute N - K
-    denom_2 = cfix(num_rows_total[0] - num_attrs )
+    denom_2 = cfix(num_rows_total[0] - num_attrs)
 
-    # compute the "explained" variance
+
+    # compute terms for "explained" variance 
+    terms_expl = Array(MAX_SELECTED_ATTR, sfix)
+    @for_range(num_attrs)
+    def loop_body(i):
+        term = num_rows_fix * (means[i] - global_mean[0])*(means[i] - global_mean[0])
+        terms_expl[i] = term / denom_1
+
+    # compute the "explained" variance using terms computed above
     var_expl = Array(1, sfix)
     var_expl[0] = sfix(0)
 
+    # sum all terms (MapReduce)
     @for_range(num_attrs)
     def loop_body(i):
-        var_expl[0] = var_expl[0] + ((num_rows_fix * (means[i] - global_mean[0])*(means[i] - global_mean[0]))/denom_1)
+        var_expl[0] = var_expl[0] + terms_expl[i]
 
-    # compute the "unexplained" variance
-    var_unexpl = Array(1, sfix)
-    var_unexpl[0] = sfix(0)
-
+    # compute terms for "unexplained" variance.
+    # done to reduce rounds by increasing parallel computation
+    terms_unexpl = Array(MAX_SELECTED_ATTR*MAX_DATASET_SIZE, sfix)
     @for_range(num_attrs)
     def loop_body(i):
         @for_range(num_rows)
         def loop_body(j):
             entry = sfix()
             entry.load_int(database[selected_attrs[i]*num_rows + j])
-            var_unexpl[0] = var_unexpl[0] + (entry - means[i])*(entry - means[i])/denom_2
+            terms_unexpl[i*num_rows + j] = (entry - means[i])*(entry - means[i])/denom_2
 
+    # compute the "unexplained" variance 
+    # using the terms computed above
+    var_unexpl = Array(1, sfix)
+    var_unexpl[0] = sfix(0)
+
+    # sum all terms (MapReduce)
+    @for_range(num_attrs)
+    def loop_body(i):
+        @for_range(num_rows)
+        def loop_body(j):
+            var_unexpl[0] = var_unexpl[0] + terms_unexpl[i*num_rows + j]
+
+    # compute f statistic
     f = var_expl[0]/var_unexpl[0]
 
     return f
