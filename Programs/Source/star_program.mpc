@@ -1,15 +1,13 @@
-# (C) 2018 University of Bristol. See License.txt
-# coding: latin-1
 """
   Wait for MAX_NUM_CLIENTS to join the game or client finish flag to be sent
   before calculating the maximum.
   Note each client connects in a single thread and so is potentially blocked.
   Each round / game will reset and so this runs indefinitiely.
 """
+
 from Compiler.types import sint, regint, Array, MemValue, Matrix
 from Compiler.instructions import listen, acceptclientconnection
 from Compiler.library import print_ln, do_while, for_range
-from Compiler import floatingpoint
 
 # need sufficient bit length (dealing with 64 bit ints + 40 bit security so must be > 104 bits)
 program.bit_length = 128
@@ -181,12 +179,17 @@ def compute_pearson_test(database, num_rows, attr_x, attr_y):
     numerator = sumsq[0]
     # print_ln('[DEBUG]: numerator = %s.', numerator.reveal())
 
-    denominator = var_x*var_y*(num_rows_fix + num_rows_fix)
+    denominator = var_x*var_y
     # print_ln('[DEBUG]: denominator = %s.', denominator.reveal())
 
     # get the sign bit 
     s = numerator < 0
-    r2 = (numerator * numerator)/denominator
+   
+    r2 = (numerator * numerator)
+    r2 = r2/denominator
+    r2 = r2/(num_rows_fix * num_rows_fix)
+   
+    #print_ln('[DEBUG]: r2 = %s.', r2.reveal())
     
     # set sign of result
     r2 = r2 * cint(-1) * s + r2*(cint(1)-s)
