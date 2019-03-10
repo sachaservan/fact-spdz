@@ -52,9 +52,9 @@ int main(int argc, char** argv) {
     finish = atoi(argv[5 + num_attr]);
 
     // optional args
-    if (argc >= 6 + num_attr)
-        host_file = argv[6 + num_attr];
     if (argc >= 7 + num_attr)
+        host_file = argv[6 + num_attr];
+    if (argc >= 8 + num_attr)
         port_base = atoi(argv[7 + num_attr]);
 
     // parse party ip addresses 
