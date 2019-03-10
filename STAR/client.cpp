@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     if (argc < 8) {
         cout << "Usage: ./client <number of spdz parties>  <dataset id> <test type (--ttest | --pearson | --chisq)>"
            <<  "<num attributes (min=2, max=20)> <attribute (0|1)> < attribute (0|1)> ... <attribute (0|1)>"
-           << "<finish (0=false, 1=true)> [optional host name, (default=localhost]> "
+           << "<finish (0=false, 1=true)> <host file name> "
            << "[optional spdz party port base number (default=14000)]>" << endl;
         exit(0);
     }
@@ -52,9 +52,9 @@ int main(int argc, char** argv) {
     finish = atoi(argv[5 + num_attr]);
 
     // optional args
-    if (argc > 6 + num_attr)
+    if (argc >= 6 + num_attr)
         host_file = argv[6 + num_attr];
-    if (argc > 7 + num_attr)
+    if (argc >= 7 + num_attr)
         port_base = atoi(argv[7 + num_attr]);
 
     // parse party ip addresses 

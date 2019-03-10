@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
     if (argc < 4) {
         cout << "Usage: ./client <data file name> <number of spdz parties>"
-           << "<finish (0=false, 1=true)> [optional host name, (default=localhost]> "
+           << "<finish (0=false, 1=true)> <host file name> "
            << "[optional spdz party port base number (default=14000)]>" << endl;
         exit(0);
     }
@@ -47,9 +47,9 @@ int main(int argc, char** argv)
     finish = atoi(argv[3]);
 
     // optional args
-    if (argc > 5)
+    if (argc >= 5)
         host_file = argv[4];
-    if (argc > 6)
+    if (argc >= 6)
         port_base = atoi(argv[5]);
 
     // parse party ip addresses 
