@@ -65,13 +65,14 @@ int main(int argc, char** argv) {
         std::istringstream iss(ip_addr);
         host_names.push_back(ip_addr);
     }
-    
+
     // print inputs 
     cout << "Received input:" << "\n"
         << "Number of Parties:  " << to_string(num_parties) << "\n"
         << "Test type:          " << test_type << "\n"
-        << "Num Attributes:     " << to_string(num_attr)
-        << "Hosts file:     " << host_file << endl;
+        << "Num Attributes:     " << to_string(num_attr) << "\n"
+        << "Hosts file:     " << host_file << "\n"
+        << endl;
 
 
     vector<int> attributes;

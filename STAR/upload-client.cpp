@@ -65,8 +65,9 @@ int main(int argc, char** argv)
     cout << "Received input:" << "\n"
         << "Filename:     " << data_file_name << "\n"
         << "Num Parties:  " << to_string(num_parties) << "\n"
-        << "Finish:       " << (finish == 0 ? "FALSE" : "TRUE") 
-        << "Hosts file:     " << host_file << endl;
+        << "Finish:       " << (finish == 0 ? "FALSE" : "TRUE")  << "\n"
+        << "Hosts file:     " << host_file << "\n" 
+        << endl;
 
     // init static gfp
     string prep_data_prefix = get_prep_dir(num_parties, PRIME_BITS, FIELD_BITS);
