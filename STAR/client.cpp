@@ -59,13 +59,13 @@ int main(int argc, char** argv) {
 
     // parse party ip addresses 
     std::vector<string> host_names;
-    std::ifstream infile(host_file);
-    std::string line;
-    while (std::getline(infile, line)) {
-        std::istringstream iss(line);
-        host_names.push_back(line);
+    std::ifstream hostsfile(host_file);
+    std::string ip_addr;
+    while (std::getline(hostsfile, ip_addr)) {
+        std::istringstream iss(ip_addr);
+        host_names.push_back(ip_addr);
     }
-
+    
     // print inputs 
     cout << "Received input:" << "\n"
         << "Number of Parties:  " << to_string(num_parties) << "\n"
