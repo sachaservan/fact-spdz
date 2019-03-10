@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     int num_attr;
     int port_base = 14000;
     string test_type;
-    string host_name = "localhost";
+    string host_file = "";
     string data_file_name = "";
 
     if (argc < 8) {
@@ -53,15 +53,26 @@ int main(int argc, char** argv) {
 
     // optional args
     if (argc > 6 + num_attr)
-        host_name = argv[6 + num_attr];
+        host_file = argv[6 + num_attr];
     if (argc > 7 + num_attr)
         port_base = atoi(argv[7 + num_attr]);
+
+    // parse party ip addresses 
+    std::vector<string> host_names;
+    std::ifstream infile(host_file);
+    std::string line;
+    while (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        host_names.push_back(line);
+    }
 
     // print inputs 
     cout << "Received input:" << "\n"
         << "Number of Parties:  " << to_string(num_parties) << "\n"
         << "Test type:          " << test_type << "\n"
-        << "Num Attributes:     " << to_string(num_attr) << endl;
+        << "Num Attributes:     " << to_string(num_attr)
+        << "Hosts file:     " << host_file << endl;
+
 
     vector<int> attributes;
     for (int i = 0; i < num_attr; i++) {
@@ -78,7 +89,7 @@ int main(int argc, char** argv) {
     // setup connections from this client to each party socket
     vector<int> sockets(num_parties);
     for (int i = 0; i < num_parties; i++)  {
-        set_up_client_socket(sockets[i], host_name.c_str(), port_base + i);
+        set_up_client_socket(sockets[i], host_names[i].c_str(), port_base + i);
     }
 
     cout << "Finished setup of socket connections to SPDZ engines." << endl;
