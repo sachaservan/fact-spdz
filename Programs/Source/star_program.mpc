@@ -419,8 +419,9 @@ def main():
             databases[next_db_upload_indx][i] = client_data[i+MAX_EXTRA_INPUTS]
             # print_ln('[DEBUG]: client_data[%s] = %s', i, client_data[i+MAX_EXTRA_INPUTS].reveal())
             
+        # TODO: Uncomment this in prod version. Removing for testing and benchmarks
         # increment next upload index
-        next_db_upload_indx.write(next_db_upload_indx + 1)
+        # next_db_upload_indx.write(next_db_upload_indx + 1)
 
         err = sint(0) # no error
         write_result_to_client(client_socket, err)
