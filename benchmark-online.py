@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-num_trials = 1
+num_trials = 5
 
 time_chisq_2attr = []
 time_chisq_5attr = []
@@ -52,6 +52,7 @@ for i in range(num_trials):
 subprocess.call(['./upload-client.x',\
 	'/home/sachaservanschreiber/star-spdz/datasets/patient_continuous_1000.txt', \
 	'2','0', '/home/sachaservanschreiber/star-spdz/HOSTS'])
+
 for i in range(num_trials):
 	time_start = time.clock()
 	subprocess.call(['./client.x', '2', '0', '--ttest', '2', '0', '1', '0', \
@@ -73,10 +74,16 @@ for i in range(num_trials):
 	time_elapsed = (time.clock() - time_start)
 	time_ftest_1000.append(time_elapsed)
 
-print("Chisq 2: " + str(time_chisq_2attr))
-print("Chisq 5: " + str(time_chisq_5attr))
-print("Chisq 12: " + str(time_chisq_12attr))
-print("Ttest 1000: " + str(time_ttest_1000))
+print("===================================")
+print("chisq @ 2: " + str(time_chisq_2attr))
+print("chisq @ 5: " + str(time_chisq_5attr))
+print("chisq @ 12: " + str(time_chisq_12attr))
+print("===================================")
+print("===================================")
+print("t-test 1000: " + str(time_ttest_1000))
+print("pearson 1000: " + str(time_pearosn_1000))
+print("f-test 1000: " + str(time_ftest_1000))
+print("===================================")
 
 exit(0)
 
