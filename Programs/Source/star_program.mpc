@@ -18,7 +18,8 @@ PORT_NUM = 14000
 MAX_NUM_DATASETS = 1  
 MAX_DATASET_SIZE = 200000 #20*10k
 MAX_SELECTED_ATTR = 20
-MAX_EXTRA_INPUTS = 30 
+MAX_EXTRA_INPUTS = 30
+ 
 # client actions
 ACTION_UPLOAD = regint(0)
 ACTION_TTEST = regint(1)
@@ -53,10 +54,8 @@ def compute_mean_and_variance(database, db_size):
     sum   = Array(1, sfix) # sum x for x in DB
 
     # hack to init sum[0] as fixed point 
-    zerof = sfix()
-    zerof.load_int(0)
-    sumsq[0] = zerof
-    sum[0] = zerof
+    sumsq[0] = sfix(0)
+    sum[0] = sfix(0)
 
     @for_range(db_size)
     def loop_body(i):
@@ -162,9 +161,7 @@ def compute_pearson_test(database, num_rows, attr_x, attr_y):
 
     # compute (xi - mean_x)(yi - mean_y)
     sumsq = Array(1, sfix)
-    zero_fix = sfix()
-    zero_fix.load_int(0)
-    sumsq[0] = zero_fix
+    sumsq[0] = sfix(0)
     
     @for_range(num_rows)
     def loop_body(i):
@@ -199,17 +196,21 @@ def compute_chisq_test(database, num_rows, num_attrs, selected_attrs):
     observed = Array(MAX_SELECTED_ATTR, sfix)
     expected = Array(MAX_SELECTED_ATTR, sfix)
 
-    zero_fix = sfix()
-    zero_fix.load_int(0)
-
     num_attrs_fix = cfix()
     num_attrs_fix.load_int(num_attrs)
 
+    # print_ln("[DEBUG]: num_attrs_fix = %s.", num_attrs_fix)
+
     sum_total = Array(1, sfix)
+    sum_total[0] = sfix(0)
+
+    # print_ln("[DEBUG]: sum_total = %s.", sum_total[0].reveal())
 
     # iterate over the selected attributes 
     @for_range(num_attrs)
     def loop_body(i):
+        observed[i] = sfix(0)
+
         # sum along the rows
         @for_range(num_rows)
         def loop_body(j):
@@ -224,7 +225,7 @@ def compute_chisq_test(database, num_rows, num_attrs, selected_attrs):
         expected[i] = sum_total[0]/num_attrs_fix
 
     x2 = Array(1, sfix)
-    x2[0] = zero_fix
+    x2[0] = sfix(0)
         
     @for_range(num_attrs)
     def loop_body(i):
@@ -419,8 +420,7 @@ def main():
             databases[next_db_upload_indx][i] = client_data[i+MAX_EXTRA_INPUTS]
             # print_ln('[DEBUG]: client_data[%s] = %s', i, client_data[i+MAX_EXTRA_INPUTS].reveal())
             
-        # TODO: Uncomment this in prod version. Removing for testing and benchmarks
-        # increment next upload index
+        # increment next upload index (USED ONLY IF MULTIPLE UPLOADS SUPPORTED; OFF BY DEFAULT)
         # next_db_upload_indx.write(next_db_upload_indx + 1)
 
         err = sint(0) # no error
@@ -478,4 +478,3 @@ def main():
         return finish == 0
 
 # start
-main()
