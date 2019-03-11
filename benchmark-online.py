@@ -8,6 +8,10 @@ time_chisq_2attr = []
 time_chisq_5attr = []
 time_chisq_12attr = []
 
+time_ttest_abalone = []
+time_pearson_abalone = []
+time_ftest_abalone = []
+
 time_ttest_1000 = []
 time_pearson_1000 = []
 time_ftest_1000 = []
@@ -50,6 +54,49 @@ print("chisq @ 2: " + str(time_chisq_2attr))
 print("chisq @ 5: " + str(time_chisq_5attr))
 print("chisq @ 12: " + str(time_chisq_12attr))
 print("===================================")
+
+# 
+# patient_continuous_1000.txt runtime
+#
+# upload continuous dataset #5000
+subprocess.call(['./upload-client.x',\
+	'/home/sachaservanschreiber/star-spdz/datasets/abalone_continuous.txt', \
+	'2','0', '/home/sachaservanschreiber/star-spdz/HOSTS'])
+
+for i in range(num_trials):
+	time_start = time.time()
+	subprocess.call(['./client.x', '2', '0', '--ttest', '2', '0', '1', '0', \
+		'/home/sachaservanschreiber/star-spdz/HOSTS'])
+	time_elapsed = (time.time() - time_start)
+	time_ttest_abalone.append(time_elapsed)
+
+print("===================================")
+print("t-test abalone: " + str(time_ttest_abalone))
+print("===================================")
+
+for i in range(num_trials):
+	time_start = time.time()
+	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
+		'/home/sachaservanschreiber/star-spdz/HOSTS'])
+	time_elapsed = (time.time() - time_start)
+	time_pearson_abalone.append(time_elapsed)
+
+print("===================================")
+print("pearson abalone: " + str(time_pearson_abalone))
+print("===================================")
+
+for i in range(num_trials):
+	time_start = time.time()
+	subprocess.call(['./client.x', '2', '0', '--ftest', '2', '0', '1', '0', \
+		'/home/sachaservanschreiber/star-spdz/HOSTS'])
+	time_elapsed = (time.time() - time_start)
+	time_ftest_abalone.append(time_elapsed)
+
+print("===================================")
+print("f-test abalone: " + str(time_ftest_abalone))
+print("===================================")
+
+
 
 # 
 # patient_continuous_1000.txt runtime
