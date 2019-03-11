@@ -66,12 +66,20 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ttest_1000.append(time_elapsed)
 
+print("===================================")
+print("t-test 1000: " + str(time_ttest_1000))
+print("===================================")
+
 for i in range(num_trials):
 	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.time() - time_start)
 	time_pearson_1000.append(time_elapsed)
+
+print("===================================")
+print("pearson 1000: " + str(time_pearosn_1000))
+print("===================================")
 
 for i in range(num_trials):
 	time_start = time.time()
@@ -81,8 +89,6 @@ for i in range(num_trials):
 	time_ftest_1000.append(time_elapsed)
 
 print("===================================")
-print("t-test 1000: " + str(time_ttest_1000))
-print("pearson 1000: " + str(time_pearosn_1000))
 print("f-test 1000: " + str(time_ftest_1000))
 print("===================================")
 
