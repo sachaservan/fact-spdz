@@ -78,7 +78,7 @@ for i in range(num_trials):
 	time_pearson_1000.append(time_elapsed)
 
 print("===================================")
-print("pearson 1000: " + str(time_pearosn_1000))
+print("pearson 1000: " + str(time_pearson_1000))
 print("===================================")
 
 for i in range(num_trials):
