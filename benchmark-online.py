@@ -2,6 +2,8 @@
 import subprocess
 import time
 
+num_trials = 1
+
 time_chisq_2attr = []
 time_chisq_5attr = []
 time_chisq_12attr = []
@@ -21,7 +23,7 @@ time_ftest_10000 = []
 # 
 # CHI SQUARED RUNTIME
 #
-for i in range(num_tests):
+for i in range(num_trials):
 	# chisq with two selected attributes
 	time_start = time.clock()
 	subprocess.call(['./client.x', '2', '0', '--chisq', '2', '0', '1', '0', \
@@ -50,21 +52,21 @@ for i in range(num_tests):
 subprocess.call(['./upload-client.x',\
 	'/home/sachaservanschreiber/star-spdz/datasets/patient_continuous_1000.txt', \
 	'2','0', '/home/sachaservanschreiber/star-spdz/HOSTS'])
-for i in range(num_tests):
+for i in range(num_trials):
 	time_start = time.clock()
 	subprocess.call(['./client.x', '2', '0', '--ttest', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.clock() - time_start)
 	time_ttest_1000.append(time_elapsed)
 
-for i in range(num_tests):
+for i in range(num_trials):
 	time_start = time.clock()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.clock() - time_start)
 	time_pearson_1000.append(time_elapsed)
 
-for i in range(num_tests):
+for i in range(num_trials):
 	time_start = time.clock()
 	subprocess.call(['./client.x', '2', '0', '--ftest', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
