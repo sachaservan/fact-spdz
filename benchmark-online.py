@@ -25,24 +25,24 @@ time_ftest_10000 = []
 #
 for i in range(num_trials):
 	# chisq with two selected attributes
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--chisq', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_chisq_2attr.append(time_elapsed)
 
 	# chisq with 5 selected attributes
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--chisq', '5', '0', '1', '2', '3', '4', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_chisq_5attr.append(time_elapsed)
 
 	# chisq with 12 selected attributes
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--chisq', '12', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_chisq_12attr.append(time_elapsed)
 
 print("===================================")
@@ -60,24 +60,24 @@ subprocess.call(['./upload-client.x',\
 	'2','0', '/home/sachaservanschreiber/star-spdz/HOSTS'])
 
 for i in range(num_trials):
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--ttest', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_ttest_1000.append(time_elapsed)
 
 for i in range(num_trials):
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_pearson_1000.append(time_elapsed)
 
 for i in range(num_trials):
-	time_start = time.clock()
+	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--ftest', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
-	time_elapsed = (time.clock() - time_start)
+	time_elapsed = (time.time() - time_start)
 	time_ftest_1000.append(time_elapsed)
 
 print("===================================")
