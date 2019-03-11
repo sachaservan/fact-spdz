@@ -45,8 +45,14 @@ for i in range(num_trials):
 	time_elapsed = (time.clock() - time_start)
 	time_chisq_12attr.append(time_elapsed)
 
+print("===================================")
+print("chisq @ 2: " + str(time_chisq_2attr))
+print("chisq @ 5: " + str(time_chisq_5attr))
+print("chisq @ 12: " + str(time_chisq_12attr))
+print("===================================")
+
 # 
-# TTEST RUNTIME
+# patient_continuous_1000.txt runtime
 #
 # upload continuous dataset #5000
 subprocess.call(['./upload-client.x',\
@@ -74,11 +80,6 @@ for i in range(num_trials):
 	time_elapsed = (time.clock() - time_start)
 	time_ftest_1000.append(time_elapsed)
 
-print("===================================")
-print("chisq @ 2: " + str(time_chisq_2attr))
-print("chisq @ 5: " + str(time_chisq_5attr))
-print("chisq @ 12: " + str(time_chisq_12attr))
-print("===================================")
 print("===================================")
 print("t-test 1000: " + str(time_ttest_1000))
 print("pearson 1000: " + str(time_pearosn_1000))
