@@ -49,11 +49,12 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_chisq_12attr.append(time_elapsed)
 
-print("===================================")
-print("chisq @ 2: " + str(time_chisq_2attr))
-print("chisq @ 5: " + str(time_chisq_5attr))
-print("chisq @ 12: " + str(time_chisq_12attr))
-print("===================================")
+with open("Benchmark-Results-Chisq.txt", "w+") as text_file:
+    text_file.write("===================================")
+	text_file.write("chisq @ 2: " + str(time_chisq_2attr))
+	text_file.write("chisq @ 5: " + str(time_chisq_5attr))
+	text_file.write("chisq @ 12: " + str(time_chisq_12attr))
+	text_file.write("===================================")
 
 # 
 # patient_continuous_1000.txt runtime
@@ -70,9 +71,6 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ttest_abalone.append(time_elapsed)
 
-print("===================================")
-print("t-test abalone: " + str(time_ttest_abalone))
-print("===================================")
 
 for i in range(num_trials):
 	time_start = time.time()
@@ -81,10 +79,6 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_pearson_abalone.append(time_elapsed)
 
-print("===================================")
-print("pearson abalone: " + str(time_pearson_abalone))
-print("===================================")
-
 for i in range(num_trials):
 	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--ftest', '2', '0', '1', '0', \
@@ -92,10 +86,17 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ftest_abalone.append(time_elapsed)
 
-print("===================================")
-print("f-test abalone: " + str(time_ftest_abalone))
-print("===================================")
 
+with open("Benchmark-Results-Abalone.txt", "w+") as text_file:
+	text_file.write("===================================")
+	text_file.write("t-test abalone: " + str(time_ttest_abalone))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("pearson abalone: " + str(time_pearson_abalone))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("f-test abalone: " + str(time_ftest_abalone))
+	text_file.write("===================================")
 
 
 # 
@@ -113,20 +114,12 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ttest_1000.append(time_elapsed)
 
-print("===================================")
-print("t-test 1,000: " + str(time_ttest_1000))
-print("===================================")
-
 for i in range(num_trials):
 	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.time() - time_start)
 	time_pearson_1000.append(time_elapsed)
-
-print("===================================")
-print("pearson 1,000: " + str(time_pearson_1000))
-print("===================================")
 
 for i in range(num_trials):
 	time_start = time.time()
@@ -135,10 +128,17 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ftest_1000.append(time_elapsed)
 
-print("===================================")
-print("f-test 1,000: " + str(time_ftest_1000))
-print("===================================")
 
+with open("Benchmark-Results-1000.txt", "w+") as text_file:
+	text_file.write("===================================")
+	text_file.write("t-test 1,000: " + str(time_ttest_1000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("pearson 1,000: " + str(time_pearson_1000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("f-test 1,000: " + str(time_ftest_1000))
+	text_file.write("===================================")
 
 # upload continuous dataset #5000
 subprocess.call(['./upload-client.x',\
@@ -152,20 +152,12 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ttest_5000.append(time_elapsed)
 
-print("===================================")
-print("t-test 5,000: " + str(time_ttest_5000))
-print("===================================")
-
 for i in range(num_trials):
 	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.time() - time_start)
 	time_pearson_5000.append(time_elapsed)
-
-print("===================================")
-print("pearson 5,000: " + str(time_pearson_5000))
-print("===================================")
 
 for i in range(num_trials):
 	time_start = time.time()
@@ -174,10 +166,16 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ftest_5000.append(time_elapsed)
 
-print("===================================")
-print("f-test 5,000: " + str(time_ftest_5000))
-print("===================================")
-
+with open("Benchmark-Results-5000.txt", "w+") as text_file:
+	text_file.write("===================================")
+	text_file.write("t-test 5,000: " + str(time_ttest_5000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("pearson 5,000: " + str(time_pearson_5000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("f-test 5,000: " + str(time_ftest_5000))
+	text_file.write("===================================")
 
 # upload continuous dataset #10000
 subprocess.call(['./upload-client.x',\
@@ -191,20 +189,12 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ttest_10000.append(time_elapsed)
 
-print("===================================")
-print("t-test 10,000: " + str(time_ttest_10000))
-print("===================================")
-
 for i in range(num_trials):
 	time_start = time.time()
 	subprocess.call(['./client.x', '2', '0', '--pearson', '2', '0', '1', '0', \
 		'/home/sachaservanschreiber/star-spdz/HOSTS'])
 	time_elapsed = (time.time() - time_start)
 	time_pearson_10000.append(time_elapsed)
-
-print("===================================")
-print("pearson 10,000: " + str(time_pearson_10000))
-print("===================================")
 
 for i in range(num_trials):
 	time_start = time.time()
@@ -213,6 +203,13 @@ for i in range(num_trials):
 	time_elapsed = (time.time() - time_start)
 	time_ftest_10000.append(time_elapsed)
 
-print("===================================")
-print("f-test 10,000: " + str(time_ftest_10000))
-print("===================================")
+with open("Benchmark-Results-10000.txt", "w+") as text_file:
+	text_file.write("===================================")
+	text_file.write("t-test 10,000: " + str(time_ttest_10000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("pearson 10,000: " + str(time_pearson_10000))
+	text_file.write("===================================")
+	text_file.write("===================================")
+	text_file.write("f-test 10,000: " + str(time_ftest_10000))
+	text_file.write("===================================")
