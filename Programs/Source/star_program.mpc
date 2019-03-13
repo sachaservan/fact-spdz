@@ -478,3 +478,4 @@ def main():
         return finish == 0
 
 # start
+main()
