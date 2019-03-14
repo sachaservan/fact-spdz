@@ -46,11 +46,11 @@ def runTests(num_clients=2, num_trials=5):
 		time_chisq_12attr.append(time_elapsed)
 
 	with open("Benchmark-Results-Chisq.txt", "w+") as text_file:
-	    text_file.write("===================================")
-		text_file.write("chisq @ 2: " + str(time_chisq_2attr))
-		text_file.write("chisq @ 5: " + str(time_chisq_5attr))
-		text_file.write("chisq @ 12: " + str(time_chisq_12attr))
-		text_file.write("===================================")
+		text_file.write("===================================\n")
+		text_file.write("chisq @ 2: " + str(time_chisq_2attr) + "\n")
+		text_file.write("chisq @ 5: " + str(time_chisq_5attr) + "\n")
+		text_file.write("chisq @ 12: " + str(time_chisq_12attr) + "\n")
+		text_file.write("===================================\n")
 
 	#
 	#
