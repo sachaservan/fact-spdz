@@ -1,6 +1,7 @@
 #! /usr/bin/python
 import subprocess
 import time
+import sys
 
 def runTests(num_clients=2, num_trials=5):
 
