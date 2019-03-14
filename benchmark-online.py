@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-def runTests(num_clients=2, num_trials=5)
+def runTests(num_clients=2, num_trials=5):
 
 	time_chisq_2attr = []
 	time_chisq_5attr = []
