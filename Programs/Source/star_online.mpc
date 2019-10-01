@@ -46,30 +46,6 @@ def compute_division(number_clients, client_values):
     
     return xfix/yfix
 
-def compute_decryption(number_clients, client_values):
-    """use the value and randomness to perform division x/y
-    Each client i submits (x+r,r_1i, y+r, r_2i) where r = sum r_i
-    """
-    x = Array(1, sint)
-    y = Array(1, sint)
-    x[0] = client_values[0] - client_values[1]
-    y[0] = client_values[2] - client_values[3]
-
-    @for_range(number_clients-1)
-    def loop_body(i):
-        # subtract the randomness constributed by each client
-        x[0] = x[0] - client_values[i*4 + 1]
-        y[0] = y[0]  - client_values[i*4 + 3]
-
-    scalefix = cfix() 
-    scalefix.load_int(2**40)
-    xfix = sfix()
-    xfix.load_int(x[0])
-    yfix = sfix()
-    yfix.load_int(y[0])
-    
-    return xfix%yfix
-
 
 def write_winner_to_clients(sockets, number_clients, winning_client_id):
     """Send share of winning client id to all clients who joined game."""
