@@ -108,21 +108,22 @@ int main(int argc, char** argv)
 {
     int my_client_id;
     int nparties;
-    int salary_value;
+    int action;
     int finish;
     int port_base = 14000;
     string host_name = "localhost";
 
     if (argc < 5) {
         cout << "Usage is bankers-bonus-client <client identifier> <number of spdz parties> "
-           << "<salary to compare> <finish (0 false, 1 true)> <optional host name, default localhost> "
+           << "<action (0 for chisq simulation, 1 for other test simuation)> " 
+           << "<finish (0 false, 1 true)> <optional host name, default localhost> "
            << "<optional spdz party port base number, default 14000>" << endl;
         exit(0);
     }
 
     my_client_id = atoi(argv[1]);
     nparties = atoi(argv[2]);
-    salary_value = atoi(argv[3]);
+    action = atoi(argv[3]);
     finish = atoi(argv[4]);
     if (argc > 5)
         host_name = argv[5];
@@ -141,10 +142,11 @@ int main(int argc, char** argv)
     }
     cout << "Finish setup socket connections to SPDZ engines." << endl;
 
+
     // Map inputs into gfp 
     vector<gfp> input_values_gfp(3);
     input_values_gfp[0].assign(my_client_id);
-    input_values_gfp[1].assign(salary_value);
+    input_values_gfp[1].assign(action);
     input_values_gfp[2].assign(finish);    
 
     // Run the commputation
