@@ -96,8 +96,8 @@ def main():
         val1 = sfix(100)
         val2 = sfix(50)
         div = val1/val2
-        cmp = val1 < val2
-        write_value_to_clients(client_sockets, number_clients, cmp)
+        # cmp = val1 < val2 # if need to do comparison
+        write_value_to_clients(client_sockets, number_clients, div.conv())
         end_if()
 
         return True
