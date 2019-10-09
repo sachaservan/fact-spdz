@@ -27,7 +27,7 @@ MAX_NUM_CLIENTS = 8
 def accept_client_input():
     """
     Wait for socket connection, send share of random value, receive input and deduce share.
-    Expect 3 inputs: unique id, bonus value and flag to indicate end of this round.
+    Expect 3 inputs: unique id, action type, and flag to indicate end of this round.
     """
     client_socket_id = regint()
     acceptclientconnection(client_socket_id, PORTNUM)
@@ -36,37 +36,13 @@ def accept_client_input():
 
     return client_socket_id, client_inputs[0], client_inputs[1], client_inputs[2]
 
-
-def determine_winner(number_clients, client_values, client_ids):
-    """Work out and return client_id which corresponds to max client_value"""
-    max_value = Array(1, sint)
-    max_value[0] = client_values[0]
-    win_client_id = Array(1, sint)
-    win_client_id[0] = client_ids[0]
-
-    @for_range(number_clients-1)
-    def loop_body(i):
-        # Is this client input a new maximum, will be sint(1) if true, else sint(0)
-        is_new_max = max_value[0] < client_values[i+1]
-        # Keep latest max_value
-        max_value[0] = if_else(is_new_max, client_values[i+1], max_value[0])
-        # Keep current winning client id
-        win_client_id[0] = if_else(is_new_max, client_ids[i+1], win_client_id[0])
-
-    return win_client_id[0]
-
-
-def write_winner_to_clients(sockets, number_clients, winning_client_id):
-    """Send share of winning client id to all clients who joined game."""
-
-    # Setup authenticate result using share of random.
-    # client can validate ∑ winning_client_id * ∑ rnd_from_triple = ∑ auth_result
+def write_value_to_clients(sockets, number_clients, value):
     rnd_from_triple = sint.get_random_triple()[0]
-    auth_result = winning_client_id * rnd_from_triple
+    auth_result = value * rnd_from_triple
 
     @for_range(number_clients)
     def loop_body(i):
-        sint.write_shares_to_socket(sockets[i], [winning_client_id, rnd_from_triple, auth_result])
+        sint.write_shares_to_socket(sockets[i], [value, rnd_from_triple, auth_result])
 
 
 def main():
@@ -82,10 +58,13 @@ def main():
 
         # Clients socket id (integer).
         client_sockets = Array(MAX_NUM_CLIENTS, regint)
+       
         # Number of clients
         number_clients = MemValue(regint(0))
+       
         # Clients secret input.
         client_values = Array(MAX_NUM_CLIENTS, sint)
+       
         # Client ids to identity client
         client_ids = Array(MAX_NUM_CLIENTS, sint)
 
@@ -99,11 +78,27 @@ def main():
             # continue while both expressions are false
             return (number_clients >= MAX_NUM_CLIENTS) + finish.reveal() == 0 
 
-        winning_client_id = determine_winner(number_clients, client_values, client_ids)
 
-        # print_ln('Found winner, index: %s.', winning_client_id.reveal())
+        client_action = client_values[0].reveal()
+        #####################################
+        # (IF) CLIENT WANTS TO GET A RANDOM VALUE
+        #####################################
+        if_then(client_action == 0)
+        print_ln("Client wants a random value.")
+        rand = sint.get_random_int(40)
+        write_value_to_clients(client_sockets, number_clients, rand)
+        end_if()
 
-        write_winner_to_clients(client_sockets, number_clients, winning_client_id)
+        #####################################
+        # (IF) CLIENT WANTS TO GET DIVISION + COMPARISON
+        #####################################
+        if_then(client_action == 1)
+        val1 = sfix(100)
+        val2 = sfix(50)
+        div = val1/val2
+        cmp = val1 < val2
+        write_value_to_clients(client_sockets, number_clients, cmp)
+        end_if()
 
         return True
 
