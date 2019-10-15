@@ -16,6 +16,8 @@ RUN apt-get install -y python
 RUN apt-get install -y libgmp3-dev
 RUN apt-get install -y golang-go
 RUN apt-get install -y psmisc
+RUN apt-get install -y traceroute
+RUN apt-get install -y nano
 
 # needed by mpir
 RUN apt-get install -y yasm 
@@ -88,13 +90,3 @@ WORKDIR /star-spdz
 
 RUN make -j 
 RUN python2.7 compile.py bankers_bonus
-
-# Make ports available to the world outside this container
-EXPOSE 14000
-EXPOSE 14001
-EXPOSE 14002
-EXPOSE 14003
-EXPOSE 14004
-EXPOSE 14005
-EXPOSE 14006
-EXPOSE 14007
