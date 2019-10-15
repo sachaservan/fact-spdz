@@ -20,15 +20,6 @@ RUN apt-get install -y traceroute
 RUN apt-get install -y nano
 RUN apt-get install -y gzip
 
-# install NTL lib (need NTL 9.10)
-RUN curl https://www.shoup.net/ntl/ntl-9.10.0.tar.gz --output ntl-9.10.0.tar.gz
-RUN gunzip ntl-9.10.0.tar.gz
-tar xvzf ntl-9.10.0.tar
-cd ntl-9.10.0/src
-./configure
-make
-make install
-
 # needed by mpir
 RUN apt-get install -y yasm 
 RUN apt-get install -y m4
@@ -36,6 +27,16 @@ RUN apt-get install -y m4
 # config stuff
 ENV mylocal "$HOME/local"
 RUN mkdir -p ${mylocal}
+
+# install NTL lib (need NTL 9.10)
+WORKDIR ${mylocal}
+RUN curl https://www.shoup.net/ntl/ntl-9.10.0.tar.gz --output ntl-9.10.0.tar.gz
+RUN gunzip ntl-9.10.0.tar.gz
+RUN tar xvzf ntl-9.10.0.tar
+RUN cd ntl-9.10.0/src
+RUN ./configure
+RUN make
+RUN make install
 
 # install MPIR 3.0.0
 WORKDIR ${mylocal}
