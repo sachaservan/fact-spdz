@@ -1,16 +1,13 @@
 # (C) 2018 University of Bristol. See License.txt
 
-# MY_CFLAGS = -DINSECURE
-
 ROOT = .
 
+USE_NTL = 1
+MOD = -DMAX_MOD_SZ=6
 OPTIM= -O3
 #PROF = -pg
 #DEBUG = -DDEBUG
 #MEMPROTECT = -DMEMPROTECT
-
-USE_NTL = 1
-MOD = -DMAX_MOD_SZ=6
 
 # set this to your preferred local storage directory
 PREP_DIR = '-DPREP_DIR="Player-Data/"'
@@ -45,7 +42,6 @@ LDLIBS += -lrt
 endif
 
 CXX = g++
-CFLAGS = $(ARCH) $(MY_CFLAGS) -g $(OPTIM) -I$(ROOT) -pthread $(PROF) $(DEBUG) $(MOD) $(MEMPROTECT) $(GF2N_LONG) $(PREP_DIR) -maes -mpclmul -msse4.1 --std=c++11 -Werror
+CFLAGS = $(ARCH) $(MY_CFLAGS) -g  $(OPTIM) -I$(ROOT) -pthread $(PROF) $(DEBUG) $(MOD) $(MEMPROTECT) $(GF2N_LONG) $(PREP_DIR) -maes -mpclmul -msse4.1 --std=c++11
 CPPFLAGS = $(CFLAGS)
 LD = g++
-
